@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background-color: rgba(192, 192, 192, 0.521);
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+
+        .loader {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(223, 219, 219, 0.377);
+            z-index: 1000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes atom {
+            from {
+                transform: rotate(90deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .circle {
+            padding: 0;
+            margin: 0;
+            width: 100px;
+            height: 100px;
+            border-left: 2px dotted white;
+            border-bottom: 4px dotted white;
+            border-right: 6px dotted white;
+            border-top: 8px dotted white;
+            border-radius: 50%;
+            animation: atom 1s ease infinite;
+        }
+    </style>
+    {%block title%}
+    {%endblock%}
+    {%block style%}
+    {%endblock%}
+</head>
+
+<body onload="lod()">
+    <div class="loader" id="loader">
+        <div class="circle">
+
+        </div>
+    </div>
+    <div class="container-fluid mx-auto">
+        <div class="navbar bg-light row p-3">
+            <div class="col-md-6 col-sm-12 ">
+                <a class="navbar-brand text-dark sm-me-auto" href="/">Boutique</a>
+                <a class="nav-item text-decoration-none text-dark m-1 sm-m-auto" href="/#category">Category</a>
+                <a class="nav-item text-decoration-none text-dark m-1 sm-m-auto" href="#">Products</a>
+                <a class="nav-item text-decoration-none text-dark m-1 sm-m-auto" href="/orders">Orders</a>
+                {%if perms.auth.change_user %}
+                <a class="nav-item text-decoration-none text-dark m-1 sm-m-auto" href="/users">Users</a>
+                {%endif%}
+            </div>
+            <div class="col-md-6 col-sm-12 ">
+                <span class="nav-item d-flex ">
+                    <form action="/search" method="get" class="d-flex" id="search">
+                        <input type="text" name="q" id="q" class="form-control" placeholder="Search...">
+                        <input type="submit" value="Search" class="btn">
+                    </form>
+                    <div class="dropdown open ms-auto">
+                        <button class="btn btn-shop dropdown-toggle" type="button" id="triggerId"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if user.is_authenticated %}{{user.first_name}} {%else%} ME{%endif%}<span
+                                class="cart text-center" id="ck">{{atom}}</span></button>
+                        <div class="dropdown-menu" aria-labelledby="triggerId">
+                            {% if user.is_authenticated %}
+                            <a class="dropdown-item" href="/logout">Log out</a>
+                            <a class="dropdown-item" href="/my">Dashboard</a>
+                            {%else%}
+                            <a class="dropdown-item" href="/login?next={{request.path}}">Login</a>
+                            <a class="dropdown-item" href="/signup">Sign up</a>
+                            {%endif%}
+                            <a class="dropdown-item" href="/mycart">Cart <span class="cart" id="ck1">{{atom}}</span></a>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    {% block items%}
+    {% endblock%}
+    <div class="container-fluid row mx-auto footer bg-dark text-light pt-2">
+        <h1>footer</h1>
+        <a href="#" onclick="cart()">click</a>
+    </div>
+    <script>
+        /*Check if search has an empty value*/
+        document.getElementById("search").onsubmit = function () {
+            if (!document.getElementById("q").value) {
+                return false;
+            }
+        }
+
+
+        function cart1() {
+            $.ajax({
+                type: "GET",
+                url: `/ck`,
+                success: function (msg) {
+                    if (msg != '') {
+                        document.getElementById('ck').innerHTML = msg;
+                        document.getElementById('ck1').innerHTML = msg;
+                    }
+                }
+            });
+        }
+        setInterval(cart1, 1000)
+        /*end search check*/
+        var rdy = setInterval(function () {
+            if (document.readyState == "complete") {
+                document.getElementById('loader').style.display='none';
+                clearInterval(rdy);
+            }
+        }, 200);
+
+        /*function lod() {
+            if (document.readyState == "complete") {
+                document.getElementById('loader').style.display='none';
+                alert(1)
+            }
+            else {
+                alert("loading");
+            }
+        }*/
+    </script>
+    {%block script %}
+    {% endblock %}
+
+    <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

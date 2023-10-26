@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>welcome</title>
+    <link rel="stylesheet" href="{% static 'form.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+</head>
+
+<body>
+    <div class="container row centered">
+        <div class="col-lg-6 mx-auto">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {%for message in messages%}
+                {%if forloop.first %}
+                <strong>{{message}}</strong>
+                {%endif%}
+                {%endfor%}
+            </div>
+            <form action="" method="post">
+                {%csrf_token%}
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email" id="" aria-describedby="emailHelpId"
+                        placeholder="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="pwd" id="pwd" placeholder="password">
+                </div>
+                <input type="submit" class="btn btn-dark form-control" value="Login">
+            </form>
+
+            <large id="createmail" class="form-text text-muted">Don't have an acount? Sign up <a href="/signup">here</a>
+            </large>
+        </div>
+        <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    </div>
+
+</body>
+
+</html>

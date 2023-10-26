@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block items %}
+
+
+<div class="container height-shop">
+    <div class="row">
+        <div class="col-lg-4 bg-light rounded p-1 m-2">
+            <div class="product-img">
+                <img src="/media/{{item.img}}" alt="">
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-7 bg-light rounded p-2 my-2 mx-auto mid text-dark">
+            <div class="text-center w-100">
+                <h2 class="big">{{item.title}}</h2>
+                <h3 class="text-muted">Ksh. {{item.price}}</h3>
+                <h6>Available sizes: {{item.size}}</h6>
+                <h6>Available is stalk:{{item.available}} pcs</h6>
+                <h5>Description</h5>
+                <p>{{item.description}}</p>
+
+                <div class="cart-btn w-100">
+                    <a class="btn btn-dark up" onclick="atom('{{item.id}}','1')">ADD TO CART</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+{%block script%}
+<script>
+    
+    function atom(id, add) {
+        //var y = document.getElementById('cart');
+        $.ajax({
+            type: "GET",
+            url: `/cart/${id}`,
+            data: "add=" + add,
+            success: function (msg) {
+                if (msg != '') {
+                    alert(msg);
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

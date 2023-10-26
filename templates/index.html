@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{%block title%}
+<title>boutique</title>
+{%endblock%}
+{% block items%}
+<!--Banner zone-->
+<div class="container height-shop">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="image img-child mid">
+                <h1>Children Fashion</h1>
+                <p>We bring you the best children fashion available.</p>
+                <a href="/category/{{c}}" class="button-outline">Shop Here</a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="image ">
+                <div class="row img-family pic">
+                    <div class="mid text-center">
+                        <h1 class="text-danger bg-light">50% Off</h1>
+                        <a href="/offer" class="button-outline">See More</a>
+                    </div>
+                </div>
+                <div class="row img-girls p-1 pic">
+                    <div class="mid text-center">
+                        <h1 style="background-color: rgba(0, 0, 0, 0.459);">Trending in market</h1>
+                        <a href="/trending" class="button-outline">See More</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Banner end-->
+
+<!--Category zone-->
+<div class="container pt-1">
+    <h2 class="position-relative text-uppercase mx-xl-5 my-2 h2-title" id="category"> <span class="pr-3">Category</span>
+    </h2>
+    <div class="d-block p-1">
+        <div class="row">
+            {% for categories in category %}
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <a class="text-decoration-none" href="category/{{ categories.title }}">
+                    <div class="category-item d-flex align-items-center mb-4">
+                        <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                            <img class="img-fluid" src="media/{{categories.img}}" alt="">
+                        </div>
+                        <div class="flex-fill pl-3">
+                            <h6>{{ categories.title }}</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+<!--End of category-->
+
+<!--Trending products-->
+
+
+<div class="container">
+    <h2 class="position-relative text-uppercase mx-xl-5 my-2 h2-title" id="products"> <span class="pr-3">Top Featured
+            Products</span> </h2>
+    <div class="row">
+        {%for items in item %}
+        <div class="col-md-4 col-lg-4 text-center">
+            <div class="product overflow-hidden m-2">
+                <h3 class="overflow-hidden">{{items.title | truncatechars:15}}</h3>
+                <figure><a href="/view/{{items.id}}"> <img src="media/{{items.img}}" alt="{{items.title}}" /></a></figure>
+                <h2 class="text-muted">Ksh.{{items.price}}</h2>
+                
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+<!--End of trending products-->
+{% endblock %}

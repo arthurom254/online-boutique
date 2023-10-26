@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{%block title%}
+<title>users</title>
+{%endblock%}
+{% block items%}
+
+<div class="container mt-3 height-shop">
+    {%if perms.auth.change_user %}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-borderless table-light  align-middle">
+            <thead class="table-light">
+                <caption>Users</caption>
+                <tr class="table-dark">
+                    <th></th>
+
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {%for users in user1%}
+                <tr>
+                    <td>{%for userprofiles in userprofile%}{%if userprofiles.user == users.id%}<img class="border-rad" src="/media/{{userprofiles.profile}}" alt="" width="40px" height="40px">{%endif%} {%endfor%}</td>
+                    <td>{{users.first_name}}</td>
+                    <td>{{users.last_name}}</td>
+                    <td>{{users.email}}</td>
+                    <td>{%for userprofiles in userprofile%}{%if userprofiles.user == users.id%} {{userprofiles.phone}}{%endif%}{%endfor%}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{%else%}
+<div class="h2 text-danger text-center">You dont have permission to view this page</div>
+{%endif%}
+
+{%endblock%}

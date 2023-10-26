@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block items %}
+
+
+<div class="container height-shop">
+    <div class="row mx-auto">
+        <div class="col-lg-4 bg-light rounded p-1 m-2">
+            <div class="product-img">
+                <img src="/media/{{item.img}}" alt="">
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-7 bg-light rounded p-2 my-2 mx-auto mid text-dark">
+            <div class="text-center w-100 text-muted">
+                <h2 class="text-dark">{{item.title}}</h2>
+                <h3 class="text-success">Ksh. {{item.price}}</h3>
+                <h6>{%if items.size%}Available sizes:{{items.size}}{%endif%}</h6>
+                <h6>{%if item.available%}Available is stalk:{{item.available}}{%endif%}</h6>
+                <h5>Description</h5>
+                <p class="text-begin">{{item.description}}</p>
+
+                <div class="cart-btn w-100">
+                    <div class="btn-group" id="cart-box">
+                        <a class="btn btn-dark down" onclick="atom('{{item.id}}','-1')">-</a>
+                        <input class="btn disabled" disabled type="number" min="0" max="{{item.available}}" value="{{cart.qty}}"
+                            name="cart" id="{{item.id}}" placeholder="ADD">
+                        <a class="btn btn-dark up" onclick="atom('{{item.id}}','1')">+</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="row mx-auto">
+        <div class="container mx-auto">
+            <h2 class="position-relative text-uppercase mx-xl-5 my-2 h2-title" id="products"> <span class="pr-3">Related</span> </h2>
+        </div>
+
+        {%for items in related %}
+        {%if items.id != item.id%}
+        <div class="col-lg-4 col-md-4">
+            <div class="product overflow-hidden m-2 text-center">
+                <h3 class="overflow-hidden">{{items.title | truncatechars:15}}</h3>
+                <figure> <a href="/view/{{items.id}}"><img src="/media/{{items.img}}" alt="{{items.title}}" /></a>
+                </figure>
+                <h2 class="text-muted">Ksh.{{items.price}}</h2>
+            </div>
+        </div>
+        {%endif%}
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}
+
+
+{%block script%}
+<script>
+    function atom(id, add) {
+        var y = document.getElementById(`${id}`);
+        $.ajax({
+            type: "GET",
+            url: `/cart/${id}`,
+            data: "add=" + add,
+            success: function (msg) {
+                if (msg != '') {
+                    y.value = msg;
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

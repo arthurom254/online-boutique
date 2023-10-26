@@ -1,0 +1,12 @@
+.form-control:focus {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 .2rem rgba(255, 255, 255, .25);
+}
+
+.centered
+{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}

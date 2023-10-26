@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{%block title%}
+{%block style%}
+<style>
+    .disable {
+        width: 80px;
+        border: 0;
+        outline: none;
+        text-align: center;
+        background-color: transparent;
+    }
+</style>
+{%endblock%}
+<title>cart</title>
+{%endblock%}
+{% block items%}
+<div class="container mt-2 height-shop">
+    {%if cart.all%}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-borderless table-primary align-middle">
+            <thead class="table-light table-center">
+                <caption>Cart</caption>
+                <tr>
+                    <th></th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for carts in cart reversed%}
+                {%for items in item%}
+                {%if carts.item.id == items.id%}
+                <tr class="table-light" id="tbls{{items.id}}">
+                    <td><img src="/media/{{items.img}}" alt="" width="50px" height="50px"></td>
+                    <td scope="row">{{items.title}}</td>
+                    <td>
+                        <div class="btn-group" id="cart-box">
+                            <a class="btn btn-dark down" onclick="atom('{{items.id}}','-1')">-</a>
+                            <input class="btn disabled" type="number" min="0" max="{{items.available}}"
+                                value="{{carts.qty}}" name="cart" id="{{items.id}}">
+                            <a class="btn btn-dark up" onclick="atom('{{items.id}}','1')">+</a>
+                        </div>
+                    </td>
+                    <td><input type="text" value="{{items.price}}" name="" id="amt{{items.id}}" class="disable"></td>
+                    <td><input type="text" value="{{carts.price}}" name="" id="total{{items.id}}" class="disable"></td>
+                </tr>
+                {%endif%}
+                {% endfor %}
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        <a href="/checkout" class="btn btn-success form-control">Checkout</a>
+
+
+    </div>
+    {%else%}
+    <div class="mid height-shop-2">
+        <h5 class="text-center text-success">Your cart is empty...  <a href="/trending">Check out these products</a></h5>
+    </div>
+
+    {%endif%}
+</div>
+
+{%endblock%}
+
+
+
+
+{%block script%}
+<script>
+
+    function atom(id, add) {
+        $.ajax({
+            type: "GET",
+            url: `/cart/${id}`,
+            data: "add=" + add,
+            success: function (msg) {
+                if (msg != '') {
+                    if (msg > 0) {
+
+                        document.getElementById(`${id}`).value = msg;
+                        amount = document.getElementById(`amt${id}`).value;
+                        document.getElementById(`total${id}`).value = amount * msg;
+                        //document.getElementById(`tbls${id}`).innerHTML = document.getElementById('tbls').innerHTML;
+                    } else {
+                        document.getElementById(`tbls${id}`).innerHTML = '';
+                    }
+
+
+
+                }
+            }
+        });
+    }
+
+
+</script>
+{% endblock %}

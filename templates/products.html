@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block items %}
+<div class="container height-shop">
+    <h2 class="position-relative text-uppercase mx-xl-5 my-2 h2-title" id="products"> <span class="pr-3">Featured
+            Products</span> </h2>
+    <div class="row">
+        {%for items in item %}
+
+        <div class="col-lg-4 col-md-4">
+            <div class="product overflow-hidden m-2 text-center">
+                <h3 class="overflow-hidden">{{items.title | truncatechars:15}}</h3>
+                <figure> <a href="/view/{{items.id}}"><img src="/media/{{items.img}}" alt="{{items.title}}" /></a></figure>
+                <h2 class="text-muted">Ksh.{{items.price}}</h2>
+                <p>{%if items.size%}{{items.size}}{%endif%}</p>
+            </div>
+        </div>
+
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

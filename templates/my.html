@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{%block title%}
+<title>boutique</title>
+{%endblock%}
+{% block items%}
+<div class="container height-shop">
+    <div class="row mx-auto">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {%for message in messages%}
+            {%if forloop.first %}
+            <strong>{{message}}</strong>
+            {%endif%}
+            {%endfor%}
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col-lg-5 col-md-5 p-2">
+            <div class="profile m-3 mid bg-light">
+                {%if user.is_superuser %}
+                <div class="h3 pt-2">Welcome Admin</div>
+                {%else%}
+                <div class="h3">Account Balance</div>
+                <div class="h4 text-success"> Ksh. {{bill.amount}}</div>
+                {%endif%}
+                <div class="m-1">
+                    <img src="/media/{{details.profile }}" alt="{{details.profile}}" class="img-circle">
+
+                </div>
+                <p class="text-success">You are : {% if perms.auth.change_user == True %}ADMIN{%else%}CLIENT{%endif%}
+                </p>
+                {%if user.is_superuser %}
+                <div class="row w-100 py-3">
+                    <div class="col"><a href="/add-category" class="btn btn-dark form-control">CATEGORY</a></div>
+                    <div class="col"><a href="/add-item" class="btn btn-dark form-control">ITEM</a></div>
+                </div>
+                {%endif%}
+                <a href="/orders" class="bnt btn-dark text-decoration-none form-control text-center">Orders</a>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5 bg-light m-3 mid p-2">
+            <div class="container">
+                <form action="" enctype="multipart/form-data" method="post">
+                    {%csrf_token%}
+                    <h6 class="text-danger">Welcome to  {% if perms.auth.change_user == True %}admin{%else%}clients{%endif%} dashboard</h6>
+
+                    <div class="mb-2">
+                        <label for="fname" class="form-label">First name:</label>
+                        <input type="text" class="form-control" value="{{user.first_name}}" name="fname" id="fname"
+                            aria-describedby="fname" placeholder="first name" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="lname" class="form-label">Last name:</label>
+                        <input type="text" class="form-control" value="{{user.last_name}}" name="lname" id="lname"
+                            aria-describedby="lname" placeholder="last name" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control disable " value="{{user.email}}" name="email" id="email"
+                            aria-describedby="email" placeholder="email" disabled>
+                    </div>
+                    <div class="mb-2">
+                        <label for="phone" class="form-label">Phone:</label>
+                        <input type="text" class="form-control" value="{{details.phone }}" name="phone" id="phone"
+                            aria-describedby="phone" placeholder="phone">
+                    </div>
+                    <div class="mb-2">
+                        <label for="photo" class="form-label">profile Photo</label>
+                        <input type="file" accept=".png, .jpg, .jpeg, .svg" class="form-control" name="photo"
+                            id="photo">
+                    </div>
+                    <p>Date joined: {{user.date_joined}}</p>
+                    <p>Last Login: {{user.last_login}}</p>
+                    <!--h2>{{request.session.session_key}}</h2-->
+                    <button type="submit" class="btn btn-success form-control">Save</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
+
+{%block script %}
+
+{% endblock %}

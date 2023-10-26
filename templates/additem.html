@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block items %}
+
+<div class="container height-shop pt-2">
+    <div class="row container-add">
+        <div class="col-md-4 col-lg-4 mx-auto overflow-y-hidden">
+            <div class="row pt-2 bg-light">
+                <div class="table-responsive">
+                    <table class="table table-secondary">
+                        <tbody>
+                            <tr>
+                                <td class="w-100"><a class="form-control text-center text-decoration-none  btn btn-secondary" href="/add-item">Add Product</a></td>
+                            </tr>
+                            <tr>
+                                <td class="w-100"><a class="form-control text-center text-decoration-none btn btn-secondary" href="/add-category">Add Category</a></td>
+                            </tr>
+                            <tr>
+                                <td class="w-100"><a class="form-control text-center text-decoration-none btn btn-secondary" href="/add-location">Add Location</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6  mx-auto bg-light overflow-y-scroll my-2 rounded">
+            <div class="alert alert-{{danger}}{{success}} alert-dismissible fade {{show}}" id="alert" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {%for message in messages%}
+                {%if forloop.first %}
+                <strong>{{message}}</strong>
+                {%endif%}
+                {%endfor%}
+            </div>
+
+            <div class="text-center h3">ADD {{name_form}}</div>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+                {%for field in form.visible_fields %}
+                <div class="form-group row m-4">
+                    <div for="{{field.label}}" class="row">
+                        {{field.label_tag}}
+                    </div>
+                    <div class="row">
+                        {{ field|add_class:'form-control' }}
+                    </div>
+                </div>
+                {%endfor%}
+                <input type="submit" value="Submit" class="form-control my-3 btn-dark">
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
